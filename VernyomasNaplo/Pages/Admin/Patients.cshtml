@@ -1,0 +1,86 @@
+﻿@page
+@model VernyomasNaplo.Pages.Admin.PatientsModel
+@using VernyomasNaplo.Data
+@{
+    ViewData["Title"] = "Páciensek Kezelése - Admin";
+}
+
+<div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="mb-0">Páciensek Listája</h3>
+        <a asp-page="/Admin/NewPatient" class="btn btn-primary px-3">Új páciens felvétele</a>
+    </div>
+
+    <div class="table-responsive bg-white rounded shadow-sm border">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th class="ps-3 py-3">Páciens Neve</th>
+                    <th class="py-3">Szoba</th>
+                    <th class="py-3">Születési idő</th>
+                    <th class="py-3">Hozzátartozó tel.</th>
+                    <th class="py-3">Mai Reggeli (0:00 - 12:00)</th>
+                    <th class="py-3">Mai Esti (12:00 - 24:00)</th>
+                    <th class="py-3 text-center">Művelet</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Patients != null && Model.Patients.Any())
+                {
+                    @foreach (var patient in Model.Patients)
+                    {
+                        var todayMeasurements = patient.Measurements != null
+                            ? patient.Measurements.Where(m => m.Date.Date == DateTime.Today).ToList()
+                            : new List<Measurement>();
+
+                        var morningMea = todayMeasurements.LastOrDefault(m => m.Date.Hour < 12);
+                        var eveningMea = todayMeasurements.LastOrDefault(m => m.Date.Hour >= 12);
+
+                        <tr>
+                            <td class="fw-bold ps-3">@patient.Name</td>
+                            <td>@patient.RoomNumber</td>
+                            <td>@patient.BirthDate.ToString("yyyy. MM. dd.")</td>
+                            <td>@(string.IsNullOrWhiteSpace(patient.RelativePhoneNumber) ? "-" : patient.RelativePhoneNumber)</td>
+
+                            <td>
+                                @if (morningMea != null)
+                                {
+                                    <span class="fw-bold text-dark">@morningMea.Systolic / @morningMea.Diastolic (p: @morningMea.Pulse)</span>
+                                    <span class="text-muted small ms-1">(@morningMea.Date.ToString("HH:mm"))</span>
+                                }
+                                else
+                                {
+                                    <span class="text-danger fw-bold">Nincs adat</span>
+                                }
+                            </td>
+
+                            <td>
+                                @if (eveningMea != null)
+                                {
+                                    <span class="fw-bold text-dark">@eveningMea.Systolic / @eveningMea.Diastolic (p: @eveningMea.Pulse)</span>
+                                    <span class="text-muted small ms-1">(@eveningMea.Date.ToString("HH:mm"))</span>
+                                }
+                                else
+                                {
+                                    <span class="text-danger fw-bold">Nincs adat</span>
+                                }
+                            </td>
+
+                            <td class="text-center">
+                                <a asp-page="/Admin/Stats" asp-route-SelectedPatientId="@patient.Id" class="btn btn-sm btn-outline-primary">
+                                    Statisztika
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-4">Nincsenek páciensek az adatbázisban.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

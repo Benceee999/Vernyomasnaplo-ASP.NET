@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Tests/Tests.csproj" Id="95de7003-1d8e-41b5-b479-1e398a064a44" />
+  <Project Path="VernyomasNaplo/VernyomasNaplo.csproj" />
+</Solution>

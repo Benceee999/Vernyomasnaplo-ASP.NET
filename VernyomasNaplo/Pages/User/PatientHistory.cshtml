@@ -1,0 +1,55 @@
+﻿@page
+@model VernyomasNaplo.Pages.User.PatientHistoryModel
+@{
+    ViewData["Title"] = "Páciens Kórtörténet";
+}
+
+<div class="container mt-2">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="mb-1">@Model.Patient.Name - Mérési előzmények</h3>
+            <p class="text-muted small mb-0">Szobaszám: <strong>@Model.Patient.RoomNumber</strong> | Születési idő: @Model.Patient.BirthDate.ToString("yyyy. MM. dd.")</p>
+        </div>
+        <a asp-page="/Index" class="btn btn-primary px-3">Vissza a főoldalra</a>
+    </div>
+
+    <div class="table-responsive bg-white rounded shadow-sm border">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th class="ps-3 py-3">Dátum, Időpont</th>
+                    <th class="py-3">Vérnyomás (Sys/Dia)</th>
+                    <th class="py-3">Pulzus</th>
+                    <th class="py-3">Mérést végző ápoló</th>
+                    <th class="py-3 text-center">Művelet</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Measurements.Any())
+                {
+                    @foreach (var m in Model.Measurements)
+                    {
+                        var isHigh = m.Systolic > 140 || m.Diastolic > 90 || m.Pulse > 100 || m.Pulse < 50;
+                        <tr>
+                            <td class="ps-3 text-muted">@m.Date.ToString("yyyy. MM. dd. HH:mm")</td>
+                            <td class="@(isHigh ? "text-danger fw-bold" : "text-primary fw-bold")">
+                                @m.Systolic / @m.Diastolic @(isHigh ? "!" : "")
+                            </td>
+                            <td>@m.Pulse bpm</td>
+                            <td>@m.Nurse?.Name</td>
+                            <td class="text-center">
+                                <a asp-page="/User/EditMeasurement" asp-route-id="@m.Id" class="btn btn-sm btn-outline-primary">Módosítás</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">Még nincs rögzített mérési eredmény ehhez a pácienshez.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

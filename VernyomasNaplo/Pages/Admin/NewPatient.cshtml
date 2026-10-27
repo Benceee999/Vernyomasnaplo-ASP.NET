@@ -1,0 +1,49 @@
+﻿@page
+@model VernyomasNaplo.Pages.Admin.NewPatientModel
+@{
+    ViewData["Title"] = "Új Páciens Felvétele";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4 p-md-5">
+                <h3 class="mb-4 text-primary">Új Páciens Felvétele</h3>
+
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3 fw-bold"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="NewPatient.Name" class="form-label fw-bold">Páciens Neve *</label>
+                        <input asp-for="NewPatient.Name" class="form-control" required />
+                        <span asp-validation-for="NewPatient.Name" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="NewPatient.RoomNumber" class="form-label fw-bold">Szobaszám *</label>
+                            <input asp-for="NewPatient.RoomNumber" type="number" min="1" class="form-control" required />
+                            <span asp-validation-for="NewPatient.RoomNumber" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="NewPatient.BirthDate" class="form-label fw-bold">Születési Dátum *</label>
+                            <input asp-for="NewPatient.BirthDate" type="date" max="@DateTime.Today.ToString("yyyy-MM-dd")" class="form-control" required />
+                            <span asp-validation-for="NewPatient.BirthDate" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="NewPatient.RelativePhoneNumber" class="form-label fw-bold">Hozzátartozó Telefonszáma</label>
+                        <input asp-for="NewPatient.RelativePhoneNumber" type="tel" class="form-control" placeholder="+36..." />
+                        <span asp-validation-for="NewPatient.RelativePhoneNumber" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between border-top pt-4">
+                        <a asp-page="/Admin/Patients" class="btn btn-outline-secondary px-4">Mégse</a>
+                        <button type="submit" class="btn btn-primary px-4 fw-bold">Páciens mentése</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

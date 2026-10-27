@@ -1,0 +1,49 @@
+﻿@page
+@model VernyomasNaplo.Pages.Admin.NewNurseModel
+@{
+    ViewData["Title"] = "Új Ápoló Felvétele";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4 p-md-5">
+                <h3 class="mb-4 text-primary">Új Ápoló Felvétele</h3>
+
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3 fw-bold"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="NewNurse.Name" class="form-label fw-bold">Ápoló Neve *</label>
+                        <input asp-for="NewNurse.Name" class="form-control" required />
+                        <span asp-validation-for="NewNurse.Name" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="NewNurse.Email" class="form-label fw-bold">E-mail Cím *</label>
+                            <input asp-for="NewNurse.Email" type="email" class="form-control" required />
+                            <span asp-validation-for="NewNurse.Email" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="NewNurse.PhoneNumber" class="form-label fw-bold">Telefonszám *</label>
+                            <input asp-for="NewNurse.PhoneNumber" type="tel" class="form-control" placeholder="+36..." required />
+                            <span asp-validation-for="NewNurse.PhoneNumber" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="NewNurse.TaxId" class="form-label fw-bold">Adószám *</label>
+                        <input asp-for="NewNurse.TaxId" type="text" inputmode="numeric" maxlength="10" class="form-control" required />
+                        <span asp-validation-for="NewNurse.TaxId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between border-top pt-4">
+                        <a asp-page="/Admin/Nurses" class="btn btn-outline-secondary px-4">Mégse</a>
+                        <button type="submit" class="btn btn-primary px-4 fw-bold">Ápoló mentése</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

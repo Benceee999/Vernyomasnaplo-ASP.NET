@@ -1,0 +1,59 @@
+﻿@page
+@model VernyomasNaplo.Pages.Admin.NursesModel
+@{
+    ViewData["Title"] = "Ápolók Kezelése - Admin";
+}
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+        @Model.ErrorMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Bezárás"></button>
+    </div>
+}
+
+<div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="mb-0">Regisztrált Ápolók</h3>
+        <a asp-page="/Admin/NewNurse" class="btn btn-primary px-3">Új ápoló felvétele</a>
+    </div>
+
+    <div class="table-responsive bg-white rounded shadow-sm border">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th class="ps-3 py-3">Név</th>
+                    <th class="py-3">E-mail</th>
+                    <th class="py-3">Telefonszám</th>
+                    <th class="py-3">Adószám</th>
+                    <th class="py-3 text-center">Műveletek</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Nurses != null && Model.Nurses.Any())
+                {
+                    @foreach (var nurse in Model.Nurses)
+                    {
+                        <tr>
+                            <td class="fw-bold ps-3">@nurse.Name</td>
+                            <td>@nurse.Email</td>
+                            <td>@nurse.PhoneNumber</td>
+                            <td>@nurse.TaxId</td>
+                            <td class="text-center">
+                                <form method="post" asp-page-handler="DeleteNurse" asp-route-id="@nurse.Id" onsubmit="return confirm('Biztosan törli ezt az ápolót?');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Törlés</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">Nincsenek ápolók az adatbázisban.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

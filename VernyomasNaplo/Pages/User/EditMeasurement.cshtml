@@ -1,0 +1,68 @@
+﻿@page
+@model VernyomasNaplo.Pages.User.EditMeasurementModel
+@{
+    ViewData["Title"] = "Mérés Szerkesztése";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4 p-md-5">
+                <h3 class="mb-4 text-primary">Mérés módosítása</h3>
+
+                <form method="post">
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                    <input type="hidden" asp-for="EditMeasurement.Id" />
+                    <input type="hidden" asp-for="EditMeasurement.PatientId" />
+                    <input type="hidden" asp-for="EditMeasurement.NurseId" />
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted small fw-bold text-uppercase mb-1">Páciens</label>
+                        <input type="text" class="form-control bg-light" value="@Model.EditMeasurement.Patient?.Name" disabled />
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label text-muted small fw-bold text-uppercase mb-1">Rögzítette</label>
+                        <input type="text" class="form-control bg-light" value="@Model.EditMeasurement.Nurse?.Name" disabled />
+                    </div>
+
+                    <input type="hidden" asp-for="EditMeasurement.Date" />
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Mérés dátuma és ideje</label>
+                        <input type="text" class="form-control bg-light" value="@Model.EditMeasurement.Date.ToString("yyyy. MM. dd. HH:mm")" readonly />
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <label asp-for="EditMeasurement.Systolic" class="form-label fw-bold">Systolé</label>
+                            <input asp-for="EditMeasurement.Systolic" type="number" class="form-control" min="50" max="250" required />
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="EditMeasurement.Diastolic" class="form-label fw-bold">Diastolé</label>
+                            <input asp-for="EditMeasurement.Diastolic" type="number" class="form-control" min="30" max="150" required />
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="EditMeasurement.Pulse" class="form-label fw-bold">Pulzus</label>
+                            <input asp-for="EditMeasurement.Pulse" type="number" class="form-control" min="30" max="200" required />
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between border-top pt-4">
+                        <a asp-page="/Index" class="btn btn-outline-secondary px-4">Vissza</a>
+                        <button type="submit" class="btn btn-primary px-4 fw-bold">Mentés</button>
+                    </div>
+                </form>
+
+                <div class="mt-5 border-top pt-4 text-center">
+                    <p class="text-muted small mb-2">Ha a mérés tévesen lett rögzítve, véglegesen törölhető a rendszerből.</p>
+                    <form method="post" asp-page-handler="Delete" asp-route-id="@Model.EditMeasurement.Id" onsubmit="return confirm('Biztosan törli a mérést?');">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Mérés végleges törlése</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

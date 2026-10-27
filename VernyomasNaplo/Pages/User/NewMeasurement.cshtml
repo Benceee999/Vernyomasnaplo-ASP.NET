@@ -1,0 +1,68 @@
+﻿@page
+@model VernyomasNaplo.Pages.User.NewMeasurementModel
+@{
+    ViewData["Title"] = "Új Mérés Felvétele";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4 p-md-5">
+                <h3 class="mb-4 text-primary">Új mérés rögzítése</h3>
+
+                <form method="post">
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="NewMeasurement.PatientId" class="form-label fw-bold">Páciens kiválasztása *</label>
+                        <select asp-for="NewMeasurement.PatientId" class="form-select" required>
+                            <option value="">-- Válasszon --</option>
+                            @foreach (var patient in Model.Patients)
+                            {
+                                <option value="@patient.Id">@patient.Name (Szoba: @patient.RoomNumber)</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="NewMeasurement.NurseId" class="form-label fw-bold">Mérést végző ápoló *</label>
+                        <select asp-for="NewMeasurement.NurseId" class="form-select" required>
+                            <option value="">-- Válasszon --</option>
+                            @foreach (var nurse in Model.Nurses)
+                            {
+                                <option value="@nurse.Id">@nurse.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="NewMeasurement.Date" class="form-label fw-bold">Mérés dátuma és ideje *</label>
+                        <input asp-for="NewMeasurement.Date" type="datetime-local" asp-format="{0:yyyy-MM-ddTHH:mm}" max="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" class="form-control" required />
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <label asp-for="NewMeasurement.Systolic" class="form-label fw-bold">Systolé</label>
+                            <input asp-for="NewMeasurement.Systolic" type="number" class="form-control" min="50" max="250" required />
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="NewMeasurement.Diastolic" class="form-label fw-bold">Diastolé</label>
+                            <input asp-for="NewMeasurement.Diastolic" type="number" class="form-control" min="30" max="150" required />
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="NewMeasurement.Pulse" class="form-label fw-bold">Pulzus</label>
+                            <input asp-for="NewMeasurement.Pulse" type="number" class="form-control" min="30" max="200" required />
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between border-top pt-4">
+                        <a asp-page="/Index" class="btn btn-outline-secondary px-4">Mégse</a>
+                        <button type="submit" class="btn btn-primary px-4 fw-bold">Adatok mentése</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
